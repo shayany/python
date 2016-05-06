@@ -1,58 +1,7 @@
-def space_maker(numberOfspace):
-    """
-    This function return a line that contain n spaces
-    :param numberOfspace:
-    :return temp:
-    """
-    temp=""
-    for i in range(numberOfspace):
-        temp+=" "
-    return temp
-
-
-def display_triangle(array,column):
-    """
-            This function display an 2D array in triangular shape
-    :param array:
-    :param column:
-    :return:
-    """
-    space=column+1
-    for row in array:
-        if (len(row)==1):
-            line = ""
-            print(space_maker(space)+"^")
-            space-=1
-            line += "/"
-            line += row[0]
-            line += "\\"
-            print(space_maker(space)+line)
-            space-=1
-            print(space_maker(space)+"*---*")
-            space-=1
-        else:
-            j=0
-            line = ""
-            underline=""
-            while(j<len(row)):
-                if (j % 2 == 0):
-                    line+="/"
-                    line+=row[j]
-                    line+="\\"
-                    underline+="*---"
-                else:
-                    line+=row[j]
-                j+=1
-            underline+="*"
-            print(space_maker(space)+line)
-            space-=1
-            print(space_maker(space)+underline)
-            space-=1
-
-
 def transition(bits):
     """
-        This function apply the transition on input
+    (15 minutes)
+        This function applies the transition rules on input string
     :param bits:
     """
     if (bits == "0000"):
@@ -91,6 +40,7 @@ def transition(bits):
 
 def row_column(length):
     """
+    (30 minutes)
     Compute how many rows and columns needed for keeping the solution in 2D array
     :param length:
     :return:
@@ -112,6 +62,7 @@ def row_column(length):
 
 def oneD_to_twoD(stream,row):
     """
+    (30 minutes)
     Convert string of data into 2D array
     :param stream:
     :param row:
@@ -132,6 +83,7 @@ def oneD_to_twoD(stream,row):
 
 def reduce(array,row):
     """
+    (90 minutes)
     Apply reduction
     :param array:
     :param row:
@@ -139,16 +91,24 @@ def reduce(array,row):
     """
     column = 0
     i = 0
-    groupC = 0
+    groupC = 0  #This variable act likes a flag to tell us the current triangle is whether upside down or  not
     reduce_array=[]
     while (i < row):
-        l=[]
+        l=[] #This temporary array keeps the value of reduction for each two rows for example:
+                                                                                             #1th row:10001000
+                                                                                             #2nd row:1110111000
+                                                                                             #      l:1010
         for j in range(column+1):
-            if(j % 4 == 0):
+            if(j % 4 == 0): # Normal triangles have a zero remainder when we divide their column's index by 4
+            #example:
+            #0
+            #012
+            #01234
+            #0123456
                 l.append(array[i][j])
             else:
                 groupC += 1
-                if (groupC == 3):
+                if (groupC == 3):  #When the groupC is 3 it means the trinagle is upside down
                     groupC=0
                     l.append(array[i][j])
         i += 2
@@ -159,6 +119,7 @@ def reduce(array,row):
 
 def print_array(array):
     """
+    (10 minutes)
     Printing an 2D array as a string
     :param array:
     :return:
@@ -172,6 +133,7 @@ def print_array(array):
 
 def convert_array(array,row,totalItem):
     """
+    (4-6 hours)
     Apply the transition rules on 2D array
     :param array:
     :param row:
@@ -182,17 +144,16 @@ def convert_array(array,row,totalItem):
     i = 0
     groupC = 0
     while (i < row):
-        l=[]
         for j in range(column+1):
-            if(j % 4 == 0):
-                bits = []
-                bits.append(array[i][j])
+            if(j % 4 == 0):#Fetch the value for normal triangle from 2D array (Normal triangles have a zero remainder when we divide their column's index by 4)
+                bits = []#Contain four elements for each trinagle
+                bits.append(array[i][j]) #add first element of the triangle
                 for t in range(3):
-                    bits.append(array[i + 1][j + t])
+                    bits.append(array[i + 1][j + t])    #add second,third and fourth element of the triangle
                 bits = bits[::-1]
-                bits = list(transition("".join(bits)))
+                bits = list(transition("".join(bits))) #Apply the transition rules
 
-                if (bits == ['0', '0', '0', '0'] or bits == ['1', '1', '1', '1']):
+                if (bits == ['0', '0', '0', '0'] or bits == ['1', '1', '1', '1']):  #If the triangle contains only zero or one, increment the segment
                     segments+=1
                 else:
                     segments=0
@@ -202,7 +163,7 @@ def convert_array(array,row,totalItem):
                 for t in range(3):
                     counter -= 1
                     array[i + 1][j + t] = bits[counter]
-            else:
+            else: #Same operation for upside down triangles
                 groupC += 1
                 if (groupC == 3):
                     groupC=0
@@ -224,9 +185,7 @@ def convert_array(array,row,totalItem):
                         array[i][t] = bits[counter]
         i += 2
         column+=4
-    #print("Total:{} Segments:{}".format(totalItem,segments))
-    if totalItem==segments:
+    if totalItem==segments: # If segments be equal with number of the triangles then we return 1 (This is condition for reduction)
         return array,1
     else:
         return array,0
-
