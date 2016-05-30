@@ -1,24 +1,6 @@
 Bibit
 -----
 
-Task: Implement the following Bibit algorithm in any programming language.
-
-Evaluation criteria:
-
-1) The program must work correctly.
-
-2) The code has to be simple and easy to maintain - we are not
-interested in architectural astronauts, with lots of abstraction or
-other complicated design patterns.
-   Do not write the code for future extensibility. Instead, write the
-code to solve the task at hand in the simplest and best way and to be as
-readable as possible. A short, but readable program is better than a
-long and general one.
-
-Please report how much time you spent, and an approximate breakdown of what 
-this time was spent for.
-
-
 Bibit takes place in a 2D pyramid of triangles. The pyramids vary in size, from the smallest of 
 size 1 being a single cell:
 
